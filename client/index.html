@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Collaborative Canvas</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="tool-group">
+                <button id="tool-brush" class="tool-btn active" data-label="Brush">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M18 13.5c0 2.2-1.8 4-4 4H5.5A2.5 2.5 0 0 1 3 15C3 12 6 11 7 11c0-2.2 1.8-4 4-4h2.5M15 7l-5-5-5 5" />
+                    </svg>
+                </button>
+                <button id="tool-eraser" class="tool-btn" data-label="Eraser">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 20Z" />
+                        <line x1="10" y1="5" x2="16" y2="11" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="tool-group">
+                <div class="tool-wrapper" title="Color">
+                    <input type="color" id="color-picker" value="#000000">
+                </div>
+                <div class="tool-wrapper" title="Size">
+                    <input type="range" id="size-picker" min="1" max="50" value="5">
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="tool-group">
+                <button id="action-undo" class="tool-btn" data-label="Undo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7v6h6" />
+                        <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+                    </svg>
+                </button>
+                <button id="action-clear" class="tool-btn" data-label="Clear All">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="status-indicator">
+                <span id="connection-status">🟡 Connecting...</span>
+                <span id="user-count" class="user-count"></span>
+            </div>
+        </div>
+
+        <!-- Canvas Container -->
+        <div id="canvas-container">
+            <canvas id="drawing-canvas"></canvas>
+            <!-- Cursor Overlay Layer can be handled either on the same canvas or a separate div overlay. 
+                 For performance with many users, painting cursors on the main canvas is easier but 
+                 requires constant repainting. We will use a separate overlay container for DOM elements 
+                 OR draw on top of canvas. Let's try DOM elements for cursors first for "wow" factor (names/colors).
+            -->
+            <div id="cursors-container"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="canvas.js"></script>
+    <script src="socket.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
