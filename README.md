@@ -6,6 +6,7 @@ A performant, real-time shared drawing application built with **Node.js**, **Soc
 
 - **Real-time Synchronization**: Instant updates across all connected clients.
 - **Global Undo**: One shared history stack - multiple users can undo each other's actions (collaborative flow).
+- **Global Redo**: Reapplies the last undone action (server-enforced history model).
 - **User Presence**: See real-time cursors of other users with randomized names/colors.
 - **Optimistic UI**: Immediate local drawing for zero-latency feel.
 - **Responsive**: Canvas adapts to window size (note: drawing coordinates are normalized).
@@ -56,15 +57,16 @@ A performant, real-time shared drawing application built with **Node.js**, **Soc
   - **Optimistic UI** prevents "laggy" feel for the drawer.
 
 ## ⏱️ Time Spent
-Approx. 2 hours.
+Approx. 2–3 hours focused implementation.
 
 ## 🐛 Known Limitations & Trade-offs
 
 > **Note**: These are intentional engineering decisions for the scope of this assignment.
 
-1.  **Global Undo**: Undo affects everyone on the canvas (Shared State). This is by design to ensure causal consistency without complex vector clock implementation.
+1.  **Global Undo/Redo**: Undo affects everyone on the canvas (Shared State). Redo is supported and history branching is enforced server-side.
 2.  **In-Memory State**: Canvas history is stored in server memory. Restarting the server wipes the drawing.
     -   *Improvement*: Use Redis/Postgres for persistence.
 3.  **Authentication**: No auth is implemented. Users are identified by ephemeral Socket IDs.
 4.  **Event Throttling**: Basic mouse event throttling is not implemented, relying on network capability.
     -   *Improvement*: Implement client-side batching (e.g., send every 50ms) to reduce network overhead.
+    -   *Note*: In practice, this performs well for small groups.
