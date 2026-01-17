@@ -64,6 +64,15 @@ io.on('connection', (socket) => {
         }
     });
 
+    // 5. Handle Redo
+    socket.on('redo', () => {
+        const redoneAction = globalState.redo();
+        if (redoneAction) {
+            io.emit('sync_state', globalState.getHistory());
+        }
+        // If null (stack empty), we do nothing. Safe, defensive.
+    });
+
     // 5. Handle Clear
     socket.on('clear', () => {
         globalState.clear();

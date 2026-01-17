@@ -79,6 +79,11 @@ btnUndo.addEventListener('click', () => {
     socket.emit('undo');
 });
 
+const btnRedo = document.getElementById('action-redo');
+btnRedo.addEventListener('click', () => {
+    socket.emit('redo');
+});
+
 btnClear.addEventListener('click', () => {
     socket.emit('clear');
 });

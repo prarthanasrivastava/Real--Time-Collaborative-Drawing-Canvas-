@@ -30,6 +30,13 @@ graph TD
 5. **Naive but robust approach**: For this project, re-drawing the canvas from history on Undo is acceptable and safest to ensure consistency. It avoids complex bitmap manipulation.
    - *Optimization*: If history gets too long, we could cache a "snapshot" image.
 
+**"Global Redo"**
+1. Server maintains a temporary `redoStack`.
+2. Undo actions move from `history` -> `redoStack`.
+3. New drawing actions **clear** the `redoStack`.
+4. Redo actions move from `redoStack` -> `history`.
+5. **Note**: Redo availability is enforced server-side to maintain a single source of truth. UI buttons may remain active, but the server will ignore invalid requests.
+
 ## Conflict Resolution
 - **Last Write Wins**: Since it's a creative canvas, if two people draw over the same pixel, the last event received by the server is the "top" layer.
 - **Ordering**: Server assigns a sequence number (implied by array order) to every stroke.
